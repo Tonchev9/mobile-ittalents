@@ -322,5 +322,10 @@ abstract class Vehicle {
 		vehicleType = sc.nextLine();
 		return createVehicle(vehicleType);
 	}
+
+	int getPrice() {
+		return price;
+	}
+	
 	
 }

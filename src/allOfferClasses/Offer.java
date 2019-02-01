@@ -52,5 +52,17 @@ public class Offer {
 		this.id = Offer.nextId;
 		Offer.nextId++;
 	}
+
+	public LocalDateTime getTimeOfPostingOffer() {
+		return timeOfPostingOffer;
+	}
+
+	public OfferType getOfferType() {
+		return offerType;
+	}
+	
+	public int getOfferVehiclePrice() {
+		return this.vehicle.getPrice();
+	}
 	
 }
