@@ -64,5 +64,9 @@ public class Offer {
 	public int getOfferVehiclePrice() {
 		return this.vehicle.getPrice();
 	}
+
+	public int getId() {
+		return id;
+	}
 	
 }
