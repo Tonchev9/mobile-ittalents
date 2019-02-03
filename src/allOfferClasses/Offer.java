@@ -49,6 +49,7 @@ public class Offer {
 		this.offerType = OfferType.getOfferType(offerType);
 		
 		this.timeOfPostingOffer = LocalDateTime.now();
+		
 		this.id = Offer.nextId;
 		Offer.nextId++;
 	}
@@ -67,6 +68,10 @@ public class Offer {
 
 	public int getId() {
 		return id;
+	}
+
+	public Vehicle getVehicle() {
+		return vehicle;
 	}
 	
 }

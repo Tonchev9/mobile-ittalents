@@ -76,6 +76,7 @@ abstract class Vehicle {
 	private LocalDate dateOfManufacture;
 	private int kilometersDriven;
 	private String color;
+	private int yearOfManufacture; // year needed to search criteria (int)
 		
 	Vehicle(){
 		Scanner sc = new Scanner(System.in);
@@ -109,6 +110,7 @@ abstract class Vehicle {
 		int month = sc.nextInt();
 		int dayOfMonth = sc.nextInt();
 		this.dateOfManufacture = LocalDate.of(year, month, dayOfMonth);
+		this.yearOfManufacture = this.dateOfManufacture.getYear();
 		System.out.println("Please enter the kilometers driven");
 		int kilometers = sc.nextInt();
 		this.setKilometersDriven(kilometers);
@@ -325,6 +327,18 @@ abstract class Vehicle {
 
 	int getPrice() {
 		return price;
+	}
+
+	public String getBrand() {
+		return brand;
+	}
+
+	public LocalDate getDateOfManufacture() {
+		return dateOfManufacture;
+	}
+
+	public int getYearOfManufacture() {
+		return yearOfManufacture;
 	}
 	
 	
