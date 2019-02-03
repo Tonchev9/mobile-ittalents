@@ -10,21 +10,38 @@ public class MobileBG {
 	private static final int MAX_PASSWORD_LENGTH = 20;
 	private Set<User> users;
 	private Set<Offer> offers;
+	private static MobileBG mobileBgExample = null;
 	
 	
-	public MobileBG() {
+	private MobileBG() throws Exception {
 		super();
 		this.users = new HashSet<>();
 		this.offers = new HashSet<>();
+		this.sayHello();
+		this.showSite();
 	}
-	 void registerNewUser(String username,String password,String email) throws Exception {
-		if(isUserNameAvailable(username) 
-				&& isPasswordValid(password)) {
-			this.users.add(new User(username,password,email));
-			System.out.println("Registration sucessful");
+	public static MobileBG getMobileBG() throws Exception {
+		if(MobileBG.mobileBgExample == null) {
+			MobileBG.mobileBgExample =  new MobileBG();
+		}
+		return MobileBG.mobileBgExample;
+	}
+	 private void registerNewUser(String username,String password,String email) throws Exception {
+		 
+		if(isUserNameAvailable(username) && isPasswordValid(password)) {
+			if(isEmailAvailable(email)) {
+				this.users.add(new User(username,password,email));
+				System.out.println("Registration sucessful");
+				return;
+			}
+			else {
+				System.out.println("Invalid email");
+				return;
+			}
 		}
 		else {
 			System.out.println("Invalid username or password");
+			return;
 		}
 	}
 	private boolean isUserNameAvailable(String userName) {
@@ -47,9 +64,22 @@ public class MobileBG {
 		}
 		return isValid;
 	}
+	private boolean isEmailAvailable(String email) {
+		boolean isValid = false;
+		for(int index = 0; index < email.length(); index++) {
+			if(email.charAt(index) == '@') {
+				isValid = true;
+			}
+		}
+		String[] myEmail = email.split(" ");
+		if(myEmail.length == 0) {
+			isValid = true;
+		}
+		return isValid;
+	}
 	
 	public void showOrderedByPrice(Set<Offer> offers, String brand,int year) {
-		System.out.println("Ordered by price");
+		System.out.println("Ordered by price (low -> high)");
 		offers.stream()
 		.filter(offer -> offer.getVehicle().getBrand().equalsIgnoreCase(brand) && offer.getVehicle().getYearOfManufacture() > year)
 		.sorted((offer1, offer2) -> offer1.getVehicle().getPrice() - offer2.getVehicle().getPrice())
@@ -87,14 +117,20 @@ public class MobileBG {
 		}
 		return isRegistered;
 	}
-	public void showSite() throws Exception {
+	public void sayHello() {
 		System.out.println("Hello!");
 		System.out.println("MOBILE BG");
+	}
+	public void showOptions() {
 		System.out.println("What do you want to do ");
 		System.out.println("Enter 1 to login");
 		System.out.println("Enter 2 to register");
 		System.out.println("Enter 3 if you are a guest");
 		System.out.println("Enter 4 to exit");
+		System.out.println("--------------------------");
+	}
+	public void showSite() throws Exception {
+		this.showOptions();
 		Scanner sc = new Scanner(System.in);
 		int x = sc.nextInt();
 		boolean condition = true;
@@ -126,13 +162,16 @@ public class MobileBG {
 				System.out.println("Enter email");
 				Scanner sc5 = new Scanner(System.in);
 				String emailToReg = sc5.nextLine();
-				this.registerNewUser(usernameToReg,passwordToReg,emailToReg);	
-				this.showSite();
-				break;		
+				this.registerNewUser(usernameToReg, passwordToReg, emailToReg);
+
+				this.showOptions();
+				x = sc.nextInt();
+				break;
 
 			case 3:
 				
 			case 4: condition = false;
+			System.out.println("Bye");
 			break;
 
 			}
