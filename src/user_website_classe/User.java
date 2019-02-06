@@ -1,4 +1,4 @@
-package allOfferClasses;
+package user_website_classe;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
+import allOfferClasses.Offer;
 
 public class User {
 	private String userName;
@@ -85,6 +87,7 @@ public class User {
 	 }
 	 
 	 public void sendMessage(User owner) {
+		 
 		 System.out.println("Message!!!");
 	 }
 	

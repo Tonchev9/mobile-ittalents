@@ -78,6 +78,7 @@ abstract class Vehicle {
 	private String color;
 	private int yearOfManufacture; // year needed to search criteria (int)
 		
+
 	Vehicle(){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter brand : ");
@@ -340,6 +341,18 @@ abstract class Vehicle {
 	public int getYearOfManufacture() {
 		return yearOfManufacture;
 	}
-	
+	public void showVehicleInfo() {
+		System.out.println("[ VEHICLE INFO ]");
+		System.out.println("Brand : " + this.brand);
+		System.out.println("Model : " + this.model);
+		System.out.println("Type of engine : " + this.typeOfEngine);
+		System.out.println("Condition : " + this.condition);
+		System.out.println("Power (Horse Power) : " + this.horse_power );
+		System.out.println("Transmission : " + this.transmission);
+		System.out.println("Year of Manufacture : " + this.dateOfManufacture.getYear());
+		System.out.println("Kilometers driven : " + this.kilometersDriven);
+		System.out.println("Color : " + this.color);
+		System.out.println("Price : " + this.price);
+	}
 	
 }

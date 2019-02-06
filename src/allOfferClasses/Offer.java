@@ -5,8 +5,18 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class Offer {
+	public static final int TOP_OFFER_PRIORITY = 3;
+	public static final int VIP_OFFER_PRIORITY = 2;
+	public static final int REGULAR_OFFER_PRIORITY = 1;
+
 	private enum OfferType{
-		VIP,REGULAR,TOP;
+		VIP(VIP_OFFER_PRIORITY),REGULAR(REGULAR_OFFER_PRIORITY),TOP(TOP_OFFER_PRIORITY);
+		
+		private int priority;
+		
+		OfferType(int priority){
+			this.priority = priority;
+		}
 		
 		private static OfferType getOfferType(String offerType) {
 			if(offerType.equalsIgnoreCase("VIP")) {
@@ -33,6 +43,8 @@ public class Offer {
 	private LocalDateTime timeOfPostingOffer;
 	private OfferType offerType; //VIP, REGULAR, TOP
 //	private int offerValidity; // days
+	
+	
 	
 	Offer(){
 		System.out.println("Please enter vehicle cathegory out of ( AUTOMOBILE / BUS / TRUCK / MOTORCYCLE )");
@@ -70,8 +82,30 @@ public class Offer {
 		return id;
 	}
 
-	public Vehicle getVehicle() {
-		return vehicle;
+	public String getVehicleBrand() {
+		return this.vehicle.getBrand();
 	}
-	
+	public int getVehicleYearOfManufacture() {
+		return this.vehicle.getYearOfManufacture();
+	}
+	public int getVehiclePrice() {
+		return this.vehicle.getPrice();
+	}
+	public LocalDate getVehicleDateOfManufacture() {
+		return this.vehicle.getDateOfManufacture();
+	}
+	public String getOfferVegicleCathegory() {
+		return this.vehicle.getTypeOfVehicle();
+	}
+	public int getOfferPriority() {
+		return this.offerType.priority;
+	}
+
+	public void showOffer() {
+		System.out.println("[ OFFER INFO ]");
+		System.out.println("Offer ID : " + this.id);
+		System.out.println("Town : " + this.town);
+		System.out.println("Offer type : " + this.offerType);
+		this.vehicle.showVehicleInfo();
+	}
 }
