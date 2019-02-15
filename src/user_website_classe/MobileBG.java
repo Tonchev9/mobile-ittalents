@@ -104,7 +104,6 @@ public class MobileBG {
 	public void showOffersByCathegories() {
 		//String category -> Set of offers prioritirized by OfferType
 		Map<String, PriorityQueue<Offer>> offersByCathegories= new HashMap<String, PriorityQueue<Offer>>();
-		
 		for(Offer offer : this.offers) {
 			if(!offersByCathegories.containsKey(offer.getOfferVegicleCathegory())) {
 				PriorityQueue<Offer> offersCathegory = new PriorityQueue<Offer>((o1, o2) -> o2.getOfferPriority() - o1.getOfferPriority());
@@ -131,29 +130,24 @@ public class MobileBG {
 		for(Offer offer : cathegory) {
 			offer.showOffer();
 		}
-	}
+	}	
+	
 	
 	public void showOrderedByPrice(Set<Offer> offers, String brand,int year) {
 		System.out.println("Ordered by price (low -> high)");
 		offers.stream()
-		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() > year)
+		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() >= year)
 		.sorted((offer1, offer2) -> offer1.getVehiclePrice() - offer2.getVehiclePrice())
 		.forEach(offer -> System.out.println(offer));
 	}
 	public void showOrderedByNewestOffers(Set<Offer> offers,String brand,int year) {
 		System.out.println("Ordered by newest ");
 		offers.stream()
-		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() > year)
-		.sorted((offer1, offer2) -> offer1.getVehicleYearOfManufacture() - offer2.getVehicleYearOfManufacture())
-		.forEach(offer -> System.out.println(offer));
-	}
-	public void showOrderedByOldestOffers(Set<Offer> offers,String brand,int year) {
-		System.out.println("Ordered by oldest ");
-		offers.stream()
-		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() > year)
+		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() >= year)
 		.sorted((offer1, offer2) -> offer2.getVehicleYearOfManufacture() - offer1.getVehicleYearOfManufacture())
 		.forEach(offer -> System.out.println(offer));
 	}
+	
 	
 	public void showOrderedByYearOfManufacture(Set<Offer> offers,String brand, int year) {
 		System.out.println("Ordered by Year Of Manufacture");
@@ -194,6 +188,7 @@ public class MobileBG {
 		while (condition) {
 			switch (x) {
 			case 1:
+				this.showOffersByCathegories();
 				System.out.println("Enter username");
 				Scanner sc1 = new Scanner(System.in);
 				String username = sc1.nextLine();
