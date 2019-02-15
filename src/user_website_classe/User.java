@@ -5,18 +5,21 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import allOfferClasses.Offer;
 
 public class User {
+	private static final int MAX_NUMBER_OF_MESSAGES = 50;
 	private String userName;
 	private String password;
 	private String email;
 	private Set<Offer> offers;
 	private Set<Offer> favourites;
-	private List<String> inbox;
+	private Queue<String> inbox;
 	public User(String userName, String password, String email) throws Exception {
 		super();
 		this.setEmail(email);
@@ -24,7 +27,7 @@ public class User {
 		this.setUserName(userName);
 		this.offers = new HashSet<>();
 		this.favourites = new HashSet<>();
-		this.inbox = new ArrayList<>();
+		this.inbox = new ArrayBlockingQueue<>(MAX_NUMBER_OF_MESSAGES);
 	}
 	public String getUserName() {
 		return userName;
@@ -94,22 +97,31 @@ public class User {
 	 		
 	
 	 
-//	 public void recieveMessage(String message) {
-//		 if(message != null) {
-//			 this.inbox.add(message);
-//		 }
-//	 }
-//	 
-//	 public void sendMessage(String userName) {
-//		 
-//		 if(owner != null) {
-//			 System.out.println("You entered the message sending function, please enter message to send : ");
-//			 Scanner sc = new Scanner(System.in);
-//			 String message = sc.nextLine();
-//			 owner.recieveMessage(message);
-//		 }
-//		 
-//	 }
+	 public void recieveMessage(String message) {
+		 if(message != null) {
+			 this.inbox.add(message);
+		 }
+	 }
+	 
+	 public void showInbox() {
+		 for(String message : this.inbox) {
+			 System.out.println(message);
+		 }
+	 }
+	 
+	 public void sendMessage(String userName) throws Exception {
+		 
+		 User owner = MobileBG.getMobileBG().giveMeUser(userName);
+		 if(owner != null) {
+			 System.out.println("You entered the message sending function, please enter message to send : ");
+			 Scanner sc = new Scanner(System.in);
+			 String message = sc.nextLine();
+			 owner.recieveMessage(message);
+		 }else {
+			 System.out.println("INVALID USERNAME !!!");
+		 }
+		 
+	 }
 	
 	 @Override
 	public int hashCode() {

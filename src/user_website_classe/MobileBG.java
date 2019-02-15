@@ -58,6 +58,16 @@ public class MobileBG {
 		}
 		return false;
 	}
+	
+	public User giveMeUser(String userName) {
+		User user = null;
+		for(User u : this.users) {
+			if(u.getUserName().equals(userName)) {
+				return u;
+			}
+		}
+		return user;
+	}
 	private boolean isUserNameAvailable(String userName) {
 		boolean isFree = true;
 		for(User user: this.users) {
@@ -104,6 +114,17 @@ public class MobileBG {
 	public void showOffersByCathegories() {
 		//String category -> Set of offers prioritirized by OfferType
 		Map<String, PriorityQueue<Offer>> offersByCathegories= new HashMap<String, PriorityQueue<Offer>>();
+<<<<<<< HEAD
+=======
+		for(Offer o : this.offers) {
+			if(!offersByCathegories.containsKey(o.getOfferVegicleCathegory())) {
+				PriorityQueue<Offer> cath = new PriorityQueue<Offer>();
+				offersByCathegories.put(o.getOfferVegicleCathegory(), cath);
+			}
+			offersByCathegories.get(o.getOfferVegicleCathegory()).offer(o);
+		}
+		
+>>>>>>> 62cec9f0a12a32e57b0880a36350bc021d13d823
 		for(Offer offer : this.offers) {
 			if(!offersByCathegories.containsKey(offer.getOfferVegicleCathegory())) {
 				PriorityQueue<Offer> offersCathegory = new PriorityQueue<Offer>((o1, o2) -> o2.getOfferPriority() - o1.getOfferPriority());
