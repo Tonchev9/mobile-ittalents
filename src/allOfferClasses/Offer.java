@@ -4,6 +4,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
+import user_website_classe.MobileBG;
+import user_website_classe.User;
+
 public class Offer {
 	public static final int TOP_OFFER_PRIORITY = 3;
 	public static final int VIP_OFFER_PRIORITY = 2;
@@ -35,7 +38,7 @@ public class Offer {
 		}
 	}
 	
-//	private User owner;
+	private User owner;
 	private static int nextId = 0;
 	private Vehicle vehicle;
 	private int id;
@@ -46,7 +49,14 @@ public class Offer {
 	
 	
 	
-	Offer(){
+	public Offer(User user){
+		
+		try {
+			this.setUser(user);
+		} catch (Exception e) {
+			System.out.println("INVALID USER ");
+			return;
+		}
 		System.out.println("Please enter vehicle cathegory out of ( AUTOMOBILE / BUS / TRUCK / MOTORCYCLE )");
 		Scanner sc = new Scanner(System.in);
 		String vehicleType = sc.nextLine();
@@ -74,6 +84,14 @@ public class Offer {
 		return offerType;
 	}
 	
+	private void setUser(User user) throws Exception {
+		if(MobileBG.getMobileBG().isThereSuchUser(user)) {
+			this.owner = user;
+		}else {
+			System.out.println("INVALID USER !!!");
+		}
+	}
+	
 	public int getOfferVehiclePrice() {
 		return this.vehicle.getPrice();
 	}
@@ -91,9 +109,6 @@ public class Offer {
 	public int getVehiclePrice() {
 		return this.vehicle.getPrice();
 	}
-	public LocalDate getVehicleDateOfManufacture() {
-		return this.vehicle.getDateOfManufacture();
-	}
 	public String getOfferVegicleCathegory() {
 		return this.vehicle.getTypeOfVehicle();
 	}
@@ -103,9 +118,24 @@ public class Offer {
 
 	public void showOffer() {
 		System.out.println("[ OFFER INFO ]");
+		System.out.println("Owner user name : " + this.owner.getUserName());
 		System.out.println("Offer ID : " + this.id);
 		System.out.println("Town : " + this.town);
 		System.out.println("Offer type : " + this.offerType);
 		this.vehicle.showVehicleInfo();
+	}
+	
+	@Override
+	public int hashCode() {
+		return this.id;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj != null && obj instanceof Offer) {
+			Offer offer = (Offer) obj;
+			return this.id == offer.getId();
+		}
+		return false;
 	}
 }

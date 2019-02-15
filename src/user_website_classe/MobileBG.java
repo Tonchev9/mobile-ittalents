@@ -50,6 +50,15 @@ public class MobileBG {
 			return;
 		}
 	}
+	 
+	public boolean isThereSuchUser(User user) {
+		if(user != null) {
+			if(this.users.contains(user)) {
+				return true;
+			}
+		}
+		return false;
+	}
 	private boolean isUserNameAvailable(String userName) {
 		boolean isFree = true;
 		for(User user: this.users) {
@@ -127,14 +136,14 @@ public class MobileBG {
 		System.out.println("Ordered by newest ");
 		offers.stream()
 		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() > year)
-		.sorted((offer1, offer2) -> offer1.getVehicleDateOfManufacture().compareTo(offer2.getVehicleDateOfManufacture()))
+		.sorted((offer1, offer2) -> offer1.getVehicleYearOfManufacture() - offer2.getVehicleYearOfManufacture())
 		.forEach(offer -> System.out.println(offer));
 	}
 	public void showOrderedByOldestOffers(Set<Offer> offers,String brand,int year) {
 		System.out.println("Ordered by oldest ");
 		offers.stream()
 		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() > year)
-		.sorted((offer1, offer2) -> offer2.getVehicleDateOfManufacture().compareTo(offer1.getVehicleDateOfManufacture()))
+		.sorted((offer1, offer2) -> offer2.getVehicleYearOfManufacture() - offer1.getVehicleYearOfManufacture())
 		.forEach(offer -> System.out.println(offer));
 	}
 	

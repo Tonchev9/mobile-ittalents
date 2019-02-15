@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 
 import allOfferClasses.Offer;
@@ -59,6 +60,11 @@ public class User {
 		return Collections.unmodifiableSet(favourites);
 	}
 	
+	public void createOffer() {
+		Offer offer = new Offer(this);
+		this.offers.add(offer);
+	}
+	
 	 void addOffer(Offer offer) throws Exception {
 		if(offer == null) throw new Exception("The offer to add is null");
 		this.offers.add(offer);
@@ -86,11 +92,36 @@ public class User {
 		 }
 	 }
 	 
-	 public void sendMessage(User owner) {
-		 
-		 System.out.println("Message!!!");
-	 }
+//	 public void recieveMessage(String message) {
+//		 if(message != null) {
+//			 this.inbox.add(message);
+//		 }
+//	 }
+//	 
+//	 public void sendMessage(String userName) {
+//		 
+//		 if(owner != null) {
+//			 System.out.println("You entered the message sending function, please enter message to send : ");
+//			 Scanner sc = new Scanner(System.in);
+//			 String message = sc.nextLine();
+//			 owner.recieveMessage(message);
+//		 }
+//		 
+//	 }
 	
+	 @Override
+	public int hashCode() {
+		return this.userName.hashCode();
+	}
+	 
+	@Override
+	public boolean equals(Object obj) {
+		if(obj != null && obj instanceof User) {
+			User user = (User) obj;
+			return this.getUserName().equals(user.getUserName());
+		}
+		return false;
+	}
 	 
 	
 }
