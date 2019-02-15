@@ -27,21 +27,20 @@ public class MobileBG {
 		return MobileBG.mobileBgExample;
 	}
 	 private void registerNewUser(String username,String password,String email) throws Exception {
-		 
-		if(isUserNameAvailable(username) && isPasswordValid(password)) {
-			if(isEmailAvailable(email)) {
-				this.users.add(new User(username,password,email));
-				System.out.println("Registration sucessful");
+		if (username != null && password != null && email != null) {
+			if (isUserNameAvailable(username) && isPasswordValid(password)) {
+				if (isEmailAvailable(email)) {
+					this.users.add(new User(username, password, email));
+					System.out.println("Registration sucessful");
+					return;
+				} else {
+					System.out.println("Invalid email");
+					return;
+				}
+			} else {
+				System.out.println("Invalid username or password");
 				return;
 			}
-			else {
-				System.out.println("Invalid email");
-				return;
-			}
-		}
-		else {
-			System.out.println("Invalid username or password");
-			return;
 		}
 	}
 	private boolean isUserNameAvailable(String userName) {
@@ -77,6 +76,16 @@ public class MobileBG {
 		}
 		return isValid;
 	}
+	
+	public User getSuccessfullyLoggedUser(String userName) {
+		User tempU = null;
+			for(User u : this.users) {
+				if(u.getUserName().equals(userName)) {
+					tempU = u;
+				}
+			}
+			return tempU;
+	 }
 	
 	public void showOrderedByPrice(Set<Offer> offers, String brand,int year) {
 		System.out.println("Ordered by price (low -> high)");
@@ -117,6 +126,8 @@ public class MobileBG {
 		}
 		return isRegistered;
 	}
+	
+	
 	public void sayHello() {
 		System.out.println("Hello!");
 		System.out.println("MOBILE BG");
@@ -146,6 +157,7 @@ public class MobileBG {
 				if (!checkLogin(username, password)) {
 					System.out.println("Invalid username or password");	
 				} else {
+					User tempUser = this.getSuccessfullyLoggedUser(username);
 					System.out.println("Login successful");
 				}
 				break;
@@ -163,12 +175,15 @@ public class MobileBG {
 				Scanner sc5 = new Scanner(System.in);
 				String emailToReg = sc5.nextLine();
 				this.registerNewUser(usernameToReg, passwordToReg, emailToReg);
-
 				this.showOptions();
 				x = sc.nextInt();
 				break;
 
 			case 3:
+				System.out.println("You want to search, enter the brand you want ");
+				String brandToSearch = sc.nextLine();
+				//
+				break;
 				
 			case 4: condition = false;
 			System.out.println("Bye");

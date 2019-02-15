@@ -83,6 +83,8 @@ public class User {
 			 }
 		 }
 	 }
+	 		
+	
 	 
 	 public void sendMessage(User owner) {
 		 System.out.println("Message!!!");
