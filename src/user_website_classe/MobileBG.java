@@ -59,6 +59,16 @@ public class MobileBG {
 		}
 		return false;
 	}
+	
+	public User giveMeUser(String userName) {
+		User user = null;
+		for(User u : this.users) {
+			if(u.getUserName().equals(userName)) {
+				return u;
+			}
+		}
+		return user;
+	}
 	private boolean isUserNameAvailable(String userName) {
 		boolean isFree = true;
 		for(User user: this.users) {
@@ -96,6 +106,13 @@ public class MobileBG {
 	public void showOffersByCathegories() {
 		//String cathegory -> Set of offers prioritirized by OfferType
 		Map<String, PriorityQueue<Offer>> offersByCathegories= new HashMap<String, PriorityQueue<Offer>>();
+		for(Offer o : this.offers) {
+			if(!offersByCathegories.containsKey(o.getOfferVegicleCathegory())) {
+				PriorityQueue<Offer> cath = new PriorityQueue<Offer>();
+				offersByCathegories.put(o.getOfferVegicleCathegory(), cath);
+			}
+			offersByCathegories.get(o.getOfferVegicleCathegory()).offer(o);
+		}
 		
 		for(Offer offer : this.offers) {
 			if(!offersByCathegories.containsKey(offer.getOfferVegicleCathegory())) {
