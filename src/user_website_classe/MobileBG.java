@@ -19,12 +19,11 @@ public class MobileBG {
 	private static MobileBG mobileBgExample = null;
 	
 	
+	
 	private MobileBG() throws Exception {
 		super();
 		this.users = new HashSet<>();
 		this.offers = new HashSet<>();
-		this.sayHello();
-		this.showSite();
 	}
 	public static MobileBG getMobileBG() throws Exception {
 		if(MobileBG.mobileBgExample == null) {
@@ -77,6 +76,13 @@ public class MobileBG {
 		}
 		return isFree;
 	}
+	
+	public void addOfferToMobileBG(Offer offer) {
+		if(offer != null) {
+			this.offers.add(offer);
+		}
+	}
+	
 	private boolean isPasswordValid(String password) {
 		boolean isValid = true;
 		if(password.length() > MAX_PASSWORD_LENGTH || password.length() < MIN_PASSWORD_LENGTH ) {
@@ -111,20 +117,18 @@ public class MobileBG {
 			}
 			return tempU;
 	 }
-	public void showOffersByCathegories() {
+	public Set<Offer> showOffersByCathegories() {
 		//String category -> Set of offers prioritirized by OfferType
+		Set<Offer> offersByCat = new HashSet<>();
 		Map<String, PriorityQueue<Offer>> offersByCathegories= new HashMap<String, PriorityQueue<Offer>>();
-<<<<<<< HEAD
-=======
 		for(Offer o : this.offers) {
 			if(!offersByCathegories.containsKey(o.getOfferVegicleCathegory())) {
-				PriorityQueue<Offer> cath = new PriorityQueue<Offer>();
+				PriorityQueue<Offer> cath = new PriorityQueue<Offer>((o1, o2) -> o2.getOfferPriority() - o1.getOfferPriority());
 				offersByCathegories.put(o.getOfferVegicleCathegory(), cath);
 			}
 			offersByCathegories.get(o.getOfferVegicleCathegory()).offer(o);
 		}
 		
->>>>>>> 62cec9f0a12a32e57b0880a36350bc021d13d823
 		for(Offer offer : this.offers) {
 			if(!offersByCathegories.containsKey(offer.getOfferVegicleCathegory())) {
 				PriorityQueue<Offer> offersCathegory = new PriorityQueue<Offer>((o1, o2) -> o2.getOfferPriority() - o1.getOfferPriority());
@@ -136,44 +140,50 @@ public class MobileBG {
 			}
 		}
 	
-		System.out.println("Please choose cathegory out of : ");
+		System.out.println("Please choose category out of : ");
 		for(Entry<String, PriorityQueue<Offer>> entry : offersByCathegories.entrySet()) {
 			System.out.println(entry.getKey());
 		}
 		Scanner sc = new Scanner(System.in);
 		String cathegoryChoice = sc.nextLine();
 		while(!offersByCathegories.containsKey(cathegoryChoice)) {
-			System.out.println("Invalid cathegory choice, please enter new VALID ONE !!!");
+			System.out.println("Invalid category choice, please enter new VALID ONE !!!");
 			cathegoryChoice = sc.nextLine();
 		}
 		PriorityQueue<Offer> cathegory = new PriorityQueue<Offer>();
 		cathegory = offersByCathegories.get(cathegoryChoice);
 		for(Offer offer : cathegory) {
+			offersByCat.add(offer);
 			offer.showOffer();
 		}
+		return offersByCat;
 	}	
 	
 	
-	public void showOrderedByPrice(Set<Offer> offers, String brand,int year) {
+	
+	public void showOrderedByPrice(String brand) {
+		Set<Offer> offersToSort = this.showOffersByCathegories();
 		System.out.println("Ordered by price (low -> high)");
-		offers.stream()
-		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() >= year)
+		offersToSort.stream()
+		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand))
 		.sorted((offer1, offer2) -> offer1.getVehiclePrice() - offer2.getVehiclePrice())
 		.forEach(offer -> System.out.println(offer));
 	}
-	public void showOrderedByNewestOffers(Set<Offer> offers,String brand,int year) {
+	public void showOrderedByNewestOffers(String brand) {
+		Set<Offer> offersToSort = this.showOffersByCathegories();
 		System.out.println("Ordered by newest ");
-		offers.stream()
-		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() >= year)
-		.sorted((offer1, offer2) -> offer2.getVehicleYearOfManufacture() - offer1.getVehicleYearOfManufacture())
+		offersToSort.stream()
+		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand))
+		.sorted((offer1, offer2) -> offer2.getTimeOfPostingOffer().compareTo(offer1.getTimeOfPostingOffer()))
 		.forEach(offer -> System.out.println(offer));
 	}
 	
 	
-	public void showOrderedByYearOfManufacture(Set<Offer> offers,String brand, int year) {
+	public void showOrderedByYearOfManufacture(String brand) {
+		Set<Offer> offersToSort = this.showOffersByCathegories();
 		System.out.println("Ordered by Year Of Manufacture");
-		offers.stream()
-		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() > year)
+		offersToSort.stream()
+		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand))
 		.sorted((offer1, offer2) -> offer1.getVehicleYearOfManufacture() - offer2.getVehicleYearOfManufacture())
 		.forEach(offer -> System.out.println(offer));
 	}
@@ -187,7 +197,48 @@ public class MobileBG {
 		}
 		return isRegistered;
 	}
-	
+
+	public void showFunctions() {
+		boolean condition = true;
+		while (condition) {
+			System.out.println("Enter 0 to exit");
+			System.out.println("Enter 1 to show by category");
+			System.out.println("Enter 2 to show offers ordered by price");
+			System.out.println("Enter 3 to show offers ordered by year of manufacture");
+			System.out.println("Enter 4 to show offers ordered by add date");
+
+			Scanner sc = new Scanner(System.in);
+			int x = sc.nextInt();
+			switch (x) {
+			case 0:
+				condition = false;
+				break;
+			case 1:
+				this.showOffersByCathegories();
+				break;
+			case 2:
+				System.out.println("Enter brand ");
+				String brandToShow = sc.nextLine();
+				this.showOrderedByPrice(brandToShow);
+				break;
+			case 3:
+				System.out.println("Enter brand ");
+				String brandToShow2 = sc.nextLine();
+				this.showOrderedByYearOfManufacture(brandToShow2);
+				break;
+			case 4:
+				System.out.println("Enter brand ");
+				String brandToShow3 = sc.nextLine();
+				this.showOrderedByNewestOffers(brandToShow3);
+				break;
+			}
+		}
+		
+	}
+	////////////////test
+	public void addUser(User u) {
+		this.users.add(u);
+	}
 	
 	public void sayHello() {
 		System.out.println("Hello!");
@@ -202,25 +253,58 @@ public class MobileBG {
 		System.out.println("--------------------------");
 	}
 	public void showSite() throws Exception {
-		this.showOptions();
-		Scanner sc = new Scanner(System.in);
-		int x = sc.nextInt();
+		this.sayHello();
+	
 		boolean condition = true;
 		while (condition) {
+			this.showOptions();
+			Scanner sc = new Scanner(System.in);
+			int x = sc.nextInt();
 			switch (x) {
 			case 1:
-				this.showOffersByCathegories();
-				System.out.println("Enter username");
+				System.out.println("Enter username"); 
 				Scanner sc1 = new Scanner(System.in);
 				String username = sc1.nextLine();
 				System.out.println("Enter password");
 				Scanner sc2 = new Scanner(System.in);
-				String password = sc1.nextLine();
+				String password = sc2.nextLine();
 				if (!checkLogin(username, password)) {
 					System.out.println("Invalid username or password");	
 				} else {
 					User tempUser = this.getSuccessfullyLoggedUser(username);
-					System.out.println("Login successful");
+					boolean cond = true;
+					while(cond) {
+						System.out.println("Login successful");
+						System.out.println("Type 0 to exit");
+						System.out.println("Type 1 to add offer");
+						System.out.println("Type 2 to send message");
+						System.out.println("Type 3 to show my offers");
+						System.out.println("Type 4 to show advanced options ");
+						int y = sc1.nextInt();
+						switch (y) {
+						case 0:
+							this.showSite();
+							cond = false;
+							break;
+						case 1:
+							tempUser.createOffer();
+							
+							break;
+						case 2:
+							System.out.println("Type user to send messsage");
+							Scanner sc5 = new Scanner(System.in);
+							String userNameToSendMessage = sc5.nextLine();
+							tempUser.sendMessage(userNameToSendMessage);
+							break;
+						case 3:
+							System.out.println("My offers!");
+							tempUser.showMyOffers();
+							break;
+						case 4:
+							this.showFunctions();
+							break;
+						}
+					}
 				}
 				break;
 
@@ -242,9 +326,7 @@ public class MobileBG {
 				break;
 
 			case 3:
-				System.out.println("You want to search, enter the brand you want ");
-				String brandToSearch = sc.nextLine();
-				//
+				this.showFunctions();
 				break;
 				
 			case 4: condition = false;

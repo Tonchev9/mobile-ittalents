@@ -81,7 +81,8 @@ abstract class Vehicle {
 	private String color;
 	private int yearOfManufacture; // year needed to search criteria (int)
 		
-
+//test
+	
 	Vehicle(){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter brand : ");
@@ -104,7 +105,8 @@ abstract class Vehicle {
 		int power = sc.nextInt();
 		this.setPower(power);
 		System.out.println("Please enter transmission type out of MANUAL/AUTOMATIC/SEMI AUTOMATIC");
-		String transmission = sc.nextLine();
+		Scanner sc2 = new Scanner(System.in);
+		String transmission = sc2.nextLine();
 		this.transmission = Transmission.getTransmission(transmission);
 		System.out.println("Please enter price");
 		int price = sc.nextInt();
@@ -120,7 +122,8 @@ abstract class Vehicle {
 		int kilometers = sc.nextInt();
 		this.setKilometersDriven(kilometers);
 		System.out.println("Please enter the color of the vehicle");
-		String color = sc.nextLine();
+		Scanner sc3 = new Scanner(System.in);
+		String color = sc3.nextLine();
 		this.setColor(color);
 		
 	}
@@ -180,7 +183,7 @@ abstract class Vehicle {
 	}
 	
 	private static class Automobile extends Vehicle{
-
+		
 		Automobile(){
 			super();
 		}

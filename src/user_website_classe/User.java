@@ -63,9 +63,10 @@ public class User {
 		return Collections.unmodifiableSet(favourites);
 	}
 	
-	public void createOffer() {
+	public void createOffer() throws Exception {
 		Offer offer = new Offer(this);
 		this.offers.add(offer);
+		MobileBG.getMobileBG().addOfferToMobileBG(offer);
 	}
 	
 	 void addOffer(Offer offer) throws Exception {
@@ -135,6 +136,12 @@ public class User {
 			return this.getUserName().equals(user.getUserName());
 		}
 		return false;
+	}
+	public void showMyOffers() {
+		for(Offer o : this.offers) {
+			o.showOffer();
+		}
+		
 	}
 	 
 	

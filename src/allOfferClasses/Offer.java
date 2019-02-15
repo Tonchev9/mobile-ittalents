@@ -47,6 +47,8 @@ public class Offer {
 	private OfferType offerType; //VIP, REGULAR, TOP
 //	private int offerValidity; // days
 	
+
+	
 	
 	
 	public Offer(User user){
