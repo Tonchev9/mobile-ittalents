@@ -94,6 +94,8 @@ public class User {
 			 }
 		 }
 	 }
+	 		
+	
 	 
 	 public void recieveMessage(String message) {
 		 if(message != null) {
