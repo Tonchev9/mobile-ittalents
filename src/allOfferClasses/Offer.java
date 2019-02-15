@@ -4,9 +4,22 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
 
+import user_website_classe.MobileBG;
+import user_website_classe.User;
+
 public class Offer {
+	public static final int TOP_OFFER_PRIORITY = 3;
+	public static final int VIP_OFFER_PRIORITY = 2;
+	public static final int REGULAR_OFFER_PRIORITY = 1;
+
 	private enum OfferType{
-		VIP,REGULAR,TOP;
+		VIP(VIP_OFFER_PRIORITY),REGULAR(REGULAR_OFFER_PRIORITY),TOP(TOP_OFFER_PRIORITY);
+		
+		private int priority;
+		
+		OfferType(int priority){
+			this.priority = priority;
+		}
 		
 		private static OfferType getOfferType(String offerType) {
 			if(offerType.equalsIgnoreCase("VIP")) {
@@ -25,7 +38,7 @@ public class Offer {
 		}
 	}
 	
-//	private User owner;
+	private User owner;
 	private static int nextId = 0;
 	private Vehicle vehicle;
 	private int id;
@@ -34,7 +47,16 @@ public class Offer {
 	private OfferType offerType; //VIP, REGULAR, TOP
 //	private int offerValidity; // days
 	
-	Offer(){
+	
+	
+	public Offer(User user){
+		
+		try {
+			this.setUser(user);
+		} catch (Exception e) {
+			System.out.println("INVALID USER ");
+			return;
+		}
 		System.out.println("Please enter vehicle cathegory out of ( AUTOMOBILE / BUS / TRUCK / MOTORCYCLE )");
 		Scanner sc = new Scanner(System.in);
 		String vehicleType = sc.nextLine();
@@ -62,6 +84,14 @@ public class Offer {
 		return offerType;
 	}
 	
+	private void setUser(User user) throws Exception {
+		if(MobileBG.getMobileBG().isThereSuchUser(user)) {
+			this.owner = user;
+		}else {
+			System.out.println("INVALID USER !!!");
+		}
+	}
+	
 	public int getOfferVehiclePrice() {
 		return this.vehicle.getPrice();
 	}
@@ -70,8 +100,42 @@ public class Offer {
 		return id;
 	}
 
-	public Vehicle getVehicle() {
-		return vehicle;
+	public String getVehicleBrand() {
+		return this.vehicle.getBrand();
+	}
+	public int getVehicleYearOfManufacture() {
+		return this.vehicle.getYearOfManufacture();
+	}
+	public int getVehiclePrice() {
+		return this.vehicle.getPrice();
+	}
+	public String getOfferVegicleCathegory() {
+		return this.vehicle.getTypeOfVehicle();
+	}
+	public int getOfferPriority() {
+		return this.offerType.priority;
+	}
+
+	public void showOffer() {
+		System.out.println("[ OFFER INFO ]");
+		System.out.println("Owner user name : " + this.owner.getUserName());
+		System.out.println("Offer ID : " + this.id);
+		System.out.println("Town : " + this.town);
+		System.out.println("Offer type : " + this.offerType);
+		this.vehicle.showVehicleInfo();
 	}
 	
+	@Override
+	public int hashCode() {
+		return this.id;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj != null && obj instanceof Offer) {
+			Offer offer = (Offer) obj;
+			return this.id == offer.getId();
+		}
+		return false;
+	}
 }

@@ -1,12 +1,15 @@
 package allOfferClasses;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Scanner;
 
 // Must add validation for local date time(dateOfManufacture)
 //Must see why when creating vehicle The console first shows invalid transmiision type and invalid color, before any value entered
 abstract class Vehicle {
 
+	private static final int MAX_NUMBER_OF_DAYS_IN_SINGLE_MONTH = 31;
+	private static final int MAX_NUMBER_OF_MONTHS = 12;
 	private enum TypeOfEngine{
 		GASOLINE, DIESEL, ELECTRIC;
 		
@@ -73,11 +76,12 @@ abstract class Vehicle {
 	private int horse_power;
 	private Transmission transmission;
 	private int price;
-	private LocalDate dateOfManufacture;
+//	private LocalDate dateOfManufacture;
 	private int kilometersDriven;
 	private String color;
 	private int yearOfManufacture; // year needed to search criteria (int)
 		
+
 	Vehicle(){
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Enter brand : ");
@@ -105,12 +109,13 @@ abstract class Vehicle {
 		System.out.println("Please enter price");
 		int price = sc.nextInt();
 		this.setPrice(price);
-		System.out.println("Please enter date of manufacture by YEAR/MONTH/DAY");
-		int year = sc.nextInt();
-		int month = sc.nextInt();
-		int dayOfMonth = sc.nextInt();
-		this.dateOfManufacture = LocalDate.of(year, month, dayOfMonth);
-		this.yearOfManufacture = this.dateOfManufacture.getYear();
+		System.out.println("Please enter year of manufacture ");
+//		int year = sc.nextInt();
+//		int month = sc.nextInt();
+//		int dayOfMonth = sc.nextInt();
+//		this.dateOfManufacture = LocalDate.of(year, month, dayOfMonth);
+//		this.yearOfManufacture = this.dateOfManufacture.getYear();
+		this.setYearOfManufacture();
 		System.out.println("Please enter the kilometers driven");
 		int kilometers = sc.nextInt();
 		this.setKilometersDriven(kilometers);
@@ -119,7 +124,18 @@ abstract class Vehicle {
 		this.setColor(color);
 		
 	}
+	
+	private void setYearOfManufacture() {
+		Scanner sc = new Scanner(System.in);
+		int year = sc.nextInt();
+		if((year >= 0 && year <= LocalDate.now().getYear())) {
+			this.yearOfManufacture = year;
+		}else {
+			System.out.println("INVALID year of manufacture, please enter new one !!!");
+			this.setYearOfManufacture();
+		}
 		
+	}
 	public abstract String getTypeOfVehicle();
 		
 	private void setColor(String color) {
@@ -333,13 +349,22 @@ abstract class Vehicle {
 		return brand;
 	}
 
-	public LocalDate getDateOfManufacture() {
-		return dateOfManufacture;
-	}
 
 	public int getYearOfManufacture() {
 		return yearOfManufacture;
 	}
-	
+	public void showVehicleInfo() {
+		System.out.println("[ VEHICLE INFO ]");
+		System.out.println("Brand : " + this.brand);
+		System.out.println("Model : " + this.model);
+		System.out.println("Type of engine : " + this.typeOfEngine);
+		System.out.println("Condition : " + this.condition);
+		System.out.println("Power (Horse Power) : " + this.horse_power );
+		System.out.println("Transmission : " + this.transmission);
+		System.out.println("Year of Manufacture : " + this.yearOfManufacture);
+		System.out.println("Kilometers driven : " + this.kilometersDriven);
+		System.out.println("Color : " + this.color);
+		System.out.println("Price : " + this.price);
+	}
 	
 }

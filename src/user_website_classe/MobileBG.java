@@ -1,9 +1,15 @@
-package allOfferClasses;
+package user_website_classe;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.PriorityQueue;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
+
+import allOfferClasses.Offer;
 
 public class MobileBG {
 	private static final int MIN_PASSWORD_LENGTH = 5;
@@ -42,6 +48,15 @@ public class MobileBG {
 				return;
 			}
 		}
+	}
+	 
+	public boolean isThereSuchUser(User user) {
+		if(user != null) {
+			if(this.users.contains(user)) {
+				return true;
+			}
+		}
+		return false;
 	}
 	private boolean isUserNameAvailable(String userName) {
 		boolean isFree = true;
@@ -86,34 +101,65 @@ public class MobileBG {
 			}
 			return tempU;
 	 }
+	public void showOffersByCathegories() {
+		//String category -> Set of offers prioritirized by OfferType
+		Map<String, PriorityQueue<Offer>> offersByCathegories= new HashMap<String, PriorityQueue<Offer>>();
+		
+		for(Offer offer : this.offers) {
+			if(!offersByCathegories.containsKey(offer.getOfferVegicleCathegory())) {
+				PriorityQueue<Offer> offersCathegory = new PriorityQueue<Offer>((o1, o2) -> o2.getOfferPriority() - o1.getOfferPriority());
+				offersCathegory.offer(offer);
+				offersByCathegories.put(offer.getOfferVegicleCathegory(), offersCathegory);
+			}else {
+				offersByCathegories.get(offer.getOfferVegicleCathegory())
+				.add(offer);
+			}
+		}
+	
+		System.out.println("Please choose cathegory out of : ");
+		for(Entry<String, PriorityQueue<Offer>> entry : offersByCathegories.entrySet()) {
+			System.out.println(entry.getKey());
+		}
+		Scanner sc = new Scanner(System.in);
+		String cathegoryChoice = sc.nextLine();
+		while(!offersByCathegories.containsKey(cathegoryChoice)) {
+			System.out.println("Invalid cathegory choice, please enter new VALID ONE !!!");
+			cathegoryChoice = sc.nextLine();
+		}
+		PriorityQueue<Offer> cathegory = new PriorityQueue<Offer>();
+		cathegory = offersByCathegories.get(cathegoryChoice);
+		for(Offer offer : cathegory) {
+			offer.showOffer();
+		}
+	}
 	
 	public void showOrderedByPrice(Set<Offer> offers, String brand,int year) {
 		System.out.println("Ordered by price (low -> high)");
 		offers.stream()
-		.filter(offer -> offer.getVehicle().getBrand().equalsIgnoreCase(brand) && offer.getVehicle().getYearOfManufacture() > year)
-		.sorted((offer1, offer2) -> offer1.getVehicle().getPrice() - offer2.getVehicle().getPrice())
+		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() > year)
+		.sorted((offer1, offer2) -> offer1.getVehiclePrice() - offer2.getVehiclePrice())
 		.forEach(offer -> System.out.println(offer));
 	}
 	public void showOrderedByNewestOffers(Set<Offer> offers,String brand,int year) {
 		System.out.println("Ordered by newest ");
 		offers.stream()
-		.filter(offer -> offer.getVehicle().getBrand().equalsIgnoreCase(brand) && offer.getVehicle().getYearOfManufacture() > year)
-		.sorted((offer1, offer2) -> offer1.getVehicle().getDateOfManufacture().compareTo(offer2.getVehicle().getDateOfManufacture()))
+		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() > year)
+		.sorted((offer1, offer2) -> offer1.getVehicleYearOfManufacture() - offer2.getVehicleYearOfManufacture())
 		.forEach(offer -> System.out.println(offer));
 	}
 	public void showOrderedByOldestOffers(Set<Offer> offers,String brand,int year) {
 		System.out.println("Ordered by oldest ");
 		offers.stream()
-		.filter(offer -> offer.getVehicle().getBrand().equalsIgnoreCase(brand) && offer.getVehicle().getYearOfManufacture() > year)
-		.sorted((offer1, offer2) -> offer2.getVehicle().getDateOfManufacture().compareTo(offer1.getVehicle().getDateOfManufacture()))
+		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() > year)
+		.sorted((offer1, offer2) -> offer2.getVehicleYearOfManufacture() - offer1.getVehicleYearOfManufacture())
 		.forEach(offer -> System.out.println(offer));
 	}
 	
 	public void showOrderedByYearOfManufacture(Set<Offer> offers,String brand, int year) {
 		System.out.println("Ordered by Year Of Manufacture");
 		offers.stream()
-		.filter(offer -> offer.getVehicle().getBrand().equalsIgnoreCase(brand) && offer.getVehicle().getYearOfManufacture() > year)
-		.sorted((offer1, offer2) -> offer1.getVehicle().getYearOfManufacture() - offer2.getVehicle().getYearOfManufacture())
+		.filter(offer -> offer.getVehicleBrand().equalsIgnoreCase(brand) && offer.getVehicleYearOfManufacture() > year)
+		.sorted((offer1, offer2) -> offer1.getVehicleYearOfManufacture() - offer2.getVehicleYearOfManufacture())
 		.forEach(offer -> System.out.println(offer));
 	}
 	
